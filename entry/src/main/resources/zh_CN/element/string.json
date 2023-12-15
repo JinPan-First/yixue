@@ -31,6 +31,14 @@
     {
       "name": "choice_number",
       "value": "最多选择一张图片"
+    },
+    {
+      "name": "EntryFormAbility_desc",
+      "value": "form_description"
+    },
+    {
+      "name": "EntryFormAbility_label",
+      "value": "form_label"
     }
   ]
 }

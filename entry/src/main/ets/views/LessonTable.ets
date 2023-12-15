@@ -2,18 +2,19 @@
  * this class used to create table view (table_base_view)
  *
  * */
+import Logger from '../common/logutils'
+import variable from '../common/variable'
 
 @Preview
 @Component
 export default struct LessonTable {
   @Link week: number
-  @Link lesson_table: object
   public weekday = ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
   public times = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
   public pp = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
   public class = [1, 2, 3, 4, 5, 6, 7]
-  public class_color = [Color.Red, Color.Blue, Color.Yellow, Color.Brown, Color.Green]
-  public class_id = ['大数据架构与技术', '操作系统', '移动应用软件开发', '计算机网络', '软件工程','软件工程实验','操作系统实验']
+  public class_color = [Color.Red, Color.Blue, Color.Yellow, Color.Brown, Color.Green,Color.Orange,Color.Grey]
+  public class_id = ['大数据架构与技术', '操作系统', '移动应用软件开发', '计算机网络', '软件工程', '企业会计法律风险管理', '形式与政策5']
   //20*7*n
   public lesson = [
     //week one
@@ -65,6 +66,13 @@ export default struct LessonTable {
   @State Number: String[] = ['0', '1', '2', '3', '4']
   scroller: Scroller = new Scroller()
 
+  aboutToAppear(){
+    var Log = new Logger('Table')
+    Log.info(`${variable.lessons}`)
+    Log.info(`${variable.lessons[this.week-1].length}`)
+  }
+
+
   build() {
     Flex({ direction: FlexDirection.Column }) {
       Row() {
@@ -84,18 +92,39 @@ export default struct LessonTable {
               }.height(60)
             })
           }.width('5.5%')
-
-          ForEach(this.class, (index) => {
-            Flex({direction:FlexDirection.Column}) {
-              ForEach(this.lesson[this.week-1][index], (item) => {
-                Flex({direction:FlexDirection.Column}) {
-                  Text(item.name.toString()).opacity(1)
-                  Text(item.teacher.toString()).opacity(1)
-                  // Text(item.classroom.toString()).opacity(1)
-                }.height(120).borderRadius(10).border({ width: 2 }).width('95%').position({y:60*(item.start-1),x:0}).backgroundColor(this.class_color[this.class_id.indexOf(item.name.toString())]).opacity(0.5)
-              })
-            }.width('13.5%')
-          })
+          if(variable.lessons[this.week-1][0].length!==0||
+          variable.lessons[this.week-1][1].length!==0||
+          variable.lessons[this.week-1][2].length!==0||
+          variable.lessons[this.week-1][3].length!==0||
+          variable.lessons[this.week-1][4].length!==0||
+          variable.lessons[this.week-1][5].length!==0||
+          variable.lessons[this.week-1][6].length!==0
+          )
+          {
+            ForEach(this.class, (index) => {
+              Flex({ direction: FlexDirection.Column }) {
+                ForEach(variable.lessons[this.week-1][index], (item) => {
+                  Flex({ direction: FlexDirection.Column }) {
+                    Text(item.name.toString()).opacity(1)
+                    Text(item.teacher.toString()).opacity(1)
+                    // Text(item.classroom.toString()).opacity(1)
+                  }
+                  .height(120)
+                  .borderRadius(10)
+                  .border({ width: 2 })
+                  .width('95%')
+                  .position({ y: 60 * (item.start - 1), x: 0 })
+                  .backgroundColor(this.class_color[this.class_id.indexOf(item.name.toString())])
+                  .opacity(0.5)
+                })
+              }.width('13.5%')
+            })
+          }
+          else {
+            Row(){
+              Text('本周无课').fontSize(80).width('100%').fontColor(Color.White)
+            }.height('100%').width('100%')
+        }
 
         }.width('100%')
       }.width('100%')

@@ -1,0 +1,11 @@
+{
+  "src": [
+    "pages/Index",
+    "pages/Login",
+    "pages/Lesson",
+    "pages/PhotoDeal",
+    "pages/PhotoChoose",
+    "pages/NoteBook",
+    "pages/Note"
+  ]
+}
